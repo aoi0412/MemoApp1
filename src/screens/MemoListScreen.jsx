@@ -9,12 +9,12 @@ export default function MemoListScreen() {
     <View style={styles.container}>
       <AppBar />
       <MemoList />
-      <CircleButton>+</CircleButton>
+      <CircleButton name="plus"></CircleButton>
     </View>
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F0F4F8",
