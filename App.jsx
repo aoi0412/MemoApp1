@@ -8,7 +8,11 @@ import MemoCreateScreen from "./src/screens/MemoCreateScreen";
 import LogInScreen from "./src/screens/LogInScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import firebase from "firebase";
+
 import { firebaseConfig } from "./env";
+
+require("firebase/firestore");
+
 const Stack = createNativeStackNavigator();
 
 if (firebase.apps.length === 0) {
