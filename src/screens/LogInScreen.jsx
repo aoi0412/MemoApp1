@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import Button from "../components/Button";
 import firebase from "firebase";
@@ -7,6 +7,27 @@ export default function LogInScreen(props) {
   const { navigation } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //テスト用
+  // useEffect(() => {
+  //   console.log("useEffect!");
+  //   return () => {
+  //     console.log("Unmount!");
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    //91.ログイン状態を監視する
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "MemoList" }],
+        });
+      }
+    });
+    return unsubscribe;
+  }, []);
+  //空鍵カッコを入れることで初めだけ実行する
   function handlePress() {
     firebase
       .auth()
