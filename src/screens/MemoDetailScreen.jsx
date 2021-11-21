@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import CircleButton from "../components/CircleButton";
 import { shape, string } from "prop-types";
 import firebase from "firebase";
@@ -10,18 +10,18 @@ export default function MemoDetailScreen(props) {
   const { navigation, route } = props;
   const { id } = route.params;
   const [memo, setMemo] = useState(null);
-  console.log(id);
+  console.log("メモのidは", id);
   useEffect(() => {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     let unsubscribe = () => {};
+    console.log(currentUser);
     if (currentUser) {
       const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
-      const unsubscribe = ref.onSnapshot((doc) => {
-        console.log(doc.id, doc.data());
+      unsubscribe = ref.onSnapshot((doc) => {
         const data = doc.data();
         setMemo({
-          id: data.id,
+          id: doc.id,
           bodyText: data.bodyText,
           updatedAt: data.updatedAt.toDate(),
         });
@@ -47,7 +47,7 @@ export default function MemoDetailScreen(props) {
         style={{ top: 60, bottom: "auto" }}
         name="edit-2"
         onPress={() => {
-          navigation.navigate("MemoEdit");
+          navigation.navigate("MemoEdit", { id: memo.id, bodyText: memo.bodyText });
         }}
       />
     </View>
