@@ -4,6 +4,7 @@ import CircleButton from "../components/CircleButton";
 import KeyboardSafeView from "../components/KeyboardSafeView";
 import { shape, string } from "prop-types";
 import firebase from "firebase";
+import { translateErrors } from "../utils";
 
 export default function MemoEditScreen(props) {
   const { navigation, route } = props;
@@ -15,7 +16,7 @@ export default function MemoEditScreen(props) {
       const db = firebase.firestore();
       const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
       ref
-        .update(
+        .set(
           {
             bodyText: body,
             updatedAt: new Date(),
@@ -26,7 +27,8 @@ export default function MemoEditScreen(props) {
           navigation.goBack();
         })
         .catch((error) => {
-          Alert.alert(error.code);
+          const errorMsg = translateErrors(error.code);
+          Alert.alert(error.title, error.description);
         });
     }
   }

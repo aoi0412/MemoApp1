@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import Button from "../components/Button";
 import firebase from "firebase";
+import { translateErrors } from "../utils";
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
@@ -23,8 +24,8 @@ export default function SignUpScreen(props) {
       })
       //catchは失敗したとき
       .catch((error) => {
-        console.log(error.code, error.message);
-        Alert.alert(error.code);
+        const errorMsg = translateErrors(error.code);
+        Alert.alert(errorMsg.title, errorMsg.description);
       });
   }
   return (
